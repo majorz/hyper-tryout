@@ -1,6 +1,7 @@
 extern crate hyper;
 
 use std::io::Write;
+use std::path::Path;
 
 use hyper::Server;
 use hyper::server::Request;
@@ -14,5 +15,9 @@ fn hello(_: Request, res: Response<Fresh>) {
 }
 
 fn main() {
-   Server::http(hello).listen("127.0.0.1:3000").unwrap();
+   let server = Server::https(
+      hello,
+      Path::new("/opt/ssl/site.crt"),
+      Path::new("/opt/ssl/site.key"),
+   ).listen("0.0.0.0:443").unwrap();
 }
